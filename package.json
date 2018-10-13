@@ -1,7 +1,7 @@
 {
-    "name": "zny-nomp",
+    "name": "y-nomp",
     "version": "0.0.4",
-    "description": "BitZeny (yescrypt) stratum mining pool based on NOMP",
+    "description": "yescrypt-yespower stratum mining pool based on NOMP",
     "keywords": [
         "stratum",
         "mining",
@@ -10,11 +10,12 @@
         "poolserver",
         "bitzeny",
         "zny",
-        "yescrypt"
+        "yescrypt",
+        "yespower"
     ],
-    "homepage": "https://github.com/ROZ-MOFUMOFU-ME/zny-nomp",
+    "homepage": "https://github.com/ohashi3d/y-nomp",
     "bugs": {
-        "url": "https://github.com/ROZ-MOFUMOFU-ME/zny-nomp/issues"
+        "url": "https://github.com/ohashi3d/y-nomp/issues"
     },
     "license": "MIT",
     "author": "Joshua Yabut",
@@ -24,7 +25,8 @@
         "Matthew Little",
         "vekexasia",
         "TheSeven",
-        "Yoshuki43"
+        "Yoshuki43",
+        "ROZ"
     ],
     "main": "init.js",
     "bin": {
@@ -32,7 +34,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/ROZ-MOFUMOFU-ME/zny-nomp.git"
+        "url": "https://github.com/ohashi3d/y-nomp.git"
     },
     "dependencies": {
         "async": "2.3.0",
@@ -50,7 +52,7 @@
         "nonce": "1.0.4",
         "redis": "2.7.1",
         "request": "2.81.0",
-        "stratum-pool": "git+https://github.com/ROZ-MOFUMOFU-ME/node-stratum-pool-yescrypt-0.5.git"
+        "stratum-pool": "git+https://github.com/ohashi3d/node-stratum-pool-yespower.git"
     },
     "engines": {
         "node": ">=0.10"

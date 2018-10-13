@@ -1,0 +1,7 @@
+{
+    "name": "Wavi",
+    "symbol": "WAVI",
+    "algorithm": "yescryptR32",
+    "blockTime": 120,
+    "txfee": 0.0001
+}

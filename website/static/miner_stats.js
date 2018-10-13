@@ -9,6 +9,21 @@ var totalBal;
 var totalPaid;
 var totalShares;
 
+function getReadableLuckTime(lucktime){
+	var luck = lucktime;
+	var timeUnits = [ ' Days', ' Hours', ' Minutes' ];
+	if (luck < 1) {
+		luck = luck * 24;
+		if (luck < 1) {
+			luck = luck * 60;
+			return luck.toFixed(0) + timeUnits[2];
+		} else {
+			return luck.toFixed(2) + timeUnits[1];
+		}
+	}
+	return luck.toFixed(3) + timeUnits[0];
+}
+
 function getReadableHashRateString(hashrate){
 	hashrate = (hashrate * 1000000);
 	if (hashrate < 1000000) {
@@ -55,15 +70,15 @@ function buildChartData(){
 	}
 
 	var i=0;
-    workerHashrateData = [];
-    for (var worker in workers){
-        workerHashrateData.push({
-            key: worker,
+	workerHashrateData = [];
+	for (var worker in workers){
+		workerHashrateData.push({
+			key: worker,
 			disabled: (i > Math.min((_workerCount-1), 3)),
-            values: workers[worker].hashrate
-        });
+			values: workers[worker].hashrate
+        	});
 		i++;
-    }
+	}
 }
 
 function updateChartData(){
@@ -147,10 +162,9 @@ function updateStats() {
 	totalImmature = statData.immature;
 	totalShares = statData.totalShares;
 	// do some calculations
-	var _blocktime = 250;
-	var _networkHashRate = parseFloat(statData.networkSols) * 1.2;
-	var _myHashRate = (totalHash / 1000000) * 2;
-	var luckDays =  ((_networkHashRate / _myHashRate * _blocktime) / (24 * 60 * 60)).toFixed(3);
+	var luckDays = 0;
+	for (var w in statData.workers) { luckDays = luckDays + 1 / statData.workers[w].luckDays; }
+	luckDays = getReadableLuckTime(1 / luckDays);
 	// update miner stats
 	$("#statsHashrate").text(getReadableHashRateString(totalHash));
 	$("#statsHashrateAvg").text(getReadableHashRateString(calculateAverageHashrate(null)));
@@ -183,7 +197,7 @@ function addWorkerToDisplay(name, htmlSafeName, workerObj) {
 	htmlToAdd+='<div><i class="fa fa-tachometer"></i> <span id="statsHashrateAvg'+htmlSafeName+'">'+getReadableHashRateString(calculateAverageHashrate(name))+'</span> (Avg)</div>';
 	htmlToAdd+='<div><i class="fa fa-shield"></i> <small>Diff:</small> <span id="statsDiff'+htmlSafeName+'">'+workerObj.diff+'</span></div>';
 	htmlToAdd+='<div><i class="fa fa-cog"></i> <small>Shares:</small> <span id="statsShares'+htmlSafeName+'">'+(Math.round(workerObj.currRoundShares * 100) / 100)+'</span></div>';
-	htmlToAdd+='<div><i class="fa fa-gavel"></i> <small>Luck <span id="statsLuckDays'+htmlSafeName+'">'+workerObj.luckDays+'</span> Days</small></div>';
+	htmlToAdd+='<div><i class="fa fa-gavel"></i> <small>Luck: <span id="statsLuckDays'+htmlSafeName+'">'+workerObj.luckDays+'</span> Days</small></div>';
 	htmlToAdd+='<div><i class="fa fa-money"></i> <small>Bal: <span id="statsBalance'+htmlSafeName+'">'+workerObj.balance+'</span></small></div>';
 	htmlToAdd+='<div><i class="fa fa-money"></i> <small>Paid: <span id="statsPaid'+htmlSafeName+'">'+workerObj.paid+'</span></small></div>';
 	htmlToAdd+='</div></div></div>';
@@ -216,7 +230,7 @@ $.getJSON('/api/worker_stats?'+_miner, function(data){
 // live stat updates
 statsSource.addEventListener('message', function(e){
 	if (document.hidden) return;
-	
+
 	// TODO, create miner_live_stats...
 	// miner_live_stats will return the same josn except without the worker history
 	// FOR NOW, use this to grab updated stats

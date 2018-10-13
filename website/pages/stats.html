@@ -102,21 +102,39 @@
             <div class="boxLowerHeader">{{=capitalizeFirstLetter(it.stats.pools[pool].name)}} Pool Stats</div>
             <div class="boxStatsList">
                 <div>
-					<div><i class="fa fa-users"></i><span id="statsMiners{{=pool}}">{{=it.stats.pools[pool].minerCount}}</span> Miners</div>
-                    <div><i class="fa fa-rocket"></i><span id="statsWorkers{{=pool}}">{{=it.stats.pools[pool].workerCount}}</span> Workers</div>
-                    <div><i class="fa fa-tachometer"></i><span id="statsHashrate{{=pool}}">{{=it.stats.pools[pool].hashrateString}}</span> (Now)</div>
-					<div><i class="fa fa-tachometer"></i><span id="statsHashrateAvg{{=pool}}">...</span> (Avg)</div>
-					<div><i class="fa fa-gavel"></i>Luck <span id="statsLuckDays{{=pool}}">{{=it.stats.pools[pool].luckDays}}</span> Days</div>
-                    <div><i class="fa fa-chart-bar"></i><span id="statsHashPercent{{=pool}}">
-{{
-    var percent=0.0;
-    if(it.stats.pools[pool].hashrate == 0 ) {
-        percent=0.0;
-    } else {
-        percent=it.stats.pools[pool].hashrate / it.stats.pools[pool].poolStats.networkSols * 100;
-    }
-}}
-                    {{=percent.toFixed(5)}}</span> %</div>
+                    <div><i class="fa fa-users"></i><span id="statsMiners{{=pool}}">{{=it.stats.pools[pool].minerCount}}</span> Miners</div>
+                        <div><i class="fa fa-rocket"></i><span id="statsWorkers{{=pool}}">{{=it.stats.pools[pool].workerCount}}</span> Workers</div>
+                        <div><i class="fa fa-tachometer"></i><span id="statsHashrate{{=pool}}">{{=it.stats.pools[pool].hashrateString}}</span> (Now)</div>
+                        <div><i class="fa fa-tachometer"></i><span id="statsHashrateAvg{{=pool}}">...</span> (Avg)</div>
+                        <div><i class="fa fa-gavel"></i>Luck: <span id="statsLuckDays{{=pool}}">
+			{{
+				function getReadableLuckTime(lucktime){
+			 		var luck = lucktime;
+					var timeUnits = [ ' Days', ' Hours', ' Minutes' ];
+					if (luck < 1) {
+						luck = luck * 24;
+						if (luck < 1) {
+							luck = luck * 60;
+							return luck.toFixed(0) + timeUnits[2];
+						} else {
+						return luck.toFixed(2) + timeUnits[1];
+					}
+				}
+					return luck + timeUnits[0];
+				}
+				_luckTime =getReadableLuckTime(it.stats.pools[pool].luckDays);
+			}}
+				{{=_luckTime}}</span></div>
+                        <div><i class="fa fa-chart-bar"></i><span id="statsHashPercent{{=pool}}">
+                        {{
+                            var percent=0.0;
+                            if(it.stats.pools[pool].hashrate == 0 ) {
+                                percent=0.0;
+                            } else {
+                                percent=it.stats.pools[pool].hashrate / it.stats.pools[pool].poolStats.networkSols * 100;
+                            }
+                        }}
+                            {{=percent.toFixed(5)}}</span> %</div>
                 </div>
             </div>
         </div>
@@ -126,10 +144,10 @@
 			<div class="boxLowerHeader">{{=capitalizeFirstLetter(it.stats.pools[pool].name)}} Network Stats</div>
             <div class="boxStatsList">
                 <div>
-                    <div><i class="fa fa-bars" aria-hidden="true"></i><small>Block Height:</small> <span id="statsNetworkBlocks{{=pool}}">{{=it.stats.pools[pool].poolStats.networkBlocks}}</span></div>
-                    <div><i class="fa fa-tachometer"></i><small>Network Hash/s:</small> <span id="statsNetworkSols{{=pool}}">{{=it.stats.pools[pool].poolStats.networkSolsString}}</span></div>
-                    <div><i class="fa fa-unlock-alt" aria-hidden="true"></i><small>Difficulty:</small> <span id="statsNetworkDiff{{=pool}}">{{=it.stats.pools[pool].poolStats.networkDiff}}</span></div>
-					<div><i class="fa fa-users"></i><small>Node Connections:</small> <span id="statsNetworkConnections{{=pool}}">{{=it.stats.pools[pool].poolStats.networkConnections}}</span></div>
+			<div><i class="fa fa-bars" aria-hidden="true"></i><small>Block Height:</small> <span id="statsNetworkBlocks{{=pool}}">{{=it.stats.pools[pool].poolStats.networkBlocks}}</span></div>
+			<div><i class="fa fa-tachometer"></i><small>Network Hash/s:</small> <span id="statsNetworkSols{{=pool}}">{{=it.stats.pools[pool].poolStats.networkSolsString}}</span></div>
+			<div><i class="fa fa-unlock-alt" aria-hidden="true"></i><small>Difficulty:</small> <span id="statsNetworkDiff{{=pool}}">{{=it.stats.pools[pool].poolStats.networkDiff}}</span></div>
+			<div><i class="fa fa-users"></i><small>Node Connections:</small> <span id="statsNetworkConnections{{=pool}}">{{=it.stats.pools[pool].poolStats.networkConnections}}</span></div>
                 </div>
             </div>
         </div>
@@ -159,8 +177,16 @@
 						<a href="https://classic.zcha.in/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
 					{{ } else if (String(it.stats.pools[pool].name).startsWith("hush")) { }}
 						<a href="https://explorer.myhush.org/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
-                    {{ } else if (String(it.stats.pools[pool].name).startsWith("bitzeny")) { }}
-                        <a href="https://insight.bitzeny.jp/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+					{{ } else if (String(it.stats.pools[pool].name).startsWith("bitzeny")) { }}
+						<a href="https://insight.bitzeny.jp/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                                        {{ } else if (String(it.stats.pools[pool].name).startsWith("yenten")) { }}
+                                                <a href="https://ytn.overemo.com/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                                        {{ } else if (String(it.stats.pools[pool].name).startsWith("wavi")) { }}
+                                                <a href="https://wavi.sytes.net/?{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                                        {{ } else if (String(it.stats.pools[pool].name).startsWith("cryply")) { }}
+                                                <a href="https://explorer.cryply.io/?block={{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                                        {{ } else if (String(it.stats.pools[pool].name).startsWith("bellcoin")) { }}
+                                                <a href="https://explorer.bellcoin.web4u.jp/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
 					{{ } else { }}
                                             {{=block[2]}}
                                         {{ } }}
@@ -189,8 +215,16 @@
 						<a href="https://explorer.zcha.in/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
 					{{ } else if (String(it.stats.pools[pool].name).startsWith("zclassic")) { }}
 						<a href="https://classic.zcha.in/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
-                    {{ } else if (String(it.stats.pools[pool].name).startsWith("bitzeny")) { }}
-                        <a href="https://insight.bitzeny.jp/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+					{{ } else if (String(it.stats.pools[pool].name).startsWith("bitzeny")) { }}
+						<a href="https://insight.bitzeny.jp/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                                        {{ } else if (String(it.stats.pools[pool].name).startsWith("yenten")) { }}
+                                                <a href="https://ytn.overemo.com/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                                        {{ } else if (String(it.stats.pools[pool].name).startsWith("wavi")) { }}
+                                                <a href="https://wavi.sytes.net/?{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                                        {{ } else if (String(it.stats.pools[pool].name).startsWith("cryply")) { }}
+                                                <a href="https://explorer.cryply.io/?block={{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                                        {{ } else if (String(it.stats.pools[pool].name).startsWith("bellcoin")) { }}
+                                                <a href="https://explorer.bellcoin.web4u.jp/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
 					{{ } else { }}
 						{{=block[2]}}
 					{{ } }}
@@ -339,29 +373,19 @@ legend.append('text')
 
             var stats = JSON.parse(e.data);
             for (var pool in stats.pools) {
-				$('#statsMiners' + pool).text(stats.pools[pool].minerCount);
-                $('#statsWorkers' + pool).text(stats.pools[pool].workerCount);
-                $('#statsHashrate' + pool).text(stats.pools[pool].hashrateString);
-				$('#statsHashrateAvg' + pool).text(getReadableHashRateString(calculateAverageHashrate(pool)));
-				$('#statsLuckDays' + pool).text(stats.pools[pool].luckDays);
-				$('#statsValidBlocks' + pool).text(stats.pools[pool].poolStats.validBlocks);
-				$('#statsTotalPaid' + pool).text((parseFloat(stats.pools[pool].poolStats.totalPaid)).toFixed(8));
-				$('#statsNetworkBlocks' + pool).text(stats.pools[pool].poolStats.networkBlocks);
-				$('#statsNetworkDiff' + pool).text(stats.pools[pool].poolStats.networkDiff);
-				$('#statsNetworkSols' + pool).text(getReadableNetworkHashRateString(stats.pools[pool].poolStats.networkSols));
-				$('#statsNetworkConnections' + pool).text(stats.pools[pool].poolStats.networkConnections);
+		$('#statsMiners' + pool).text(stats.pools[pool].minerCount);
+		$('#statsWorkers' + pool).text(stats.pools[pool].workerCount);
+		$('#statsHashrate' + pool).text(stats.pools[pool].hashrateString);
+		$('#statsHashrateAvg' + pool).text(getReadableHashRateString(calculateAverageHashrate(pool)));
+		$('#statsLuckDays' + pool).text(getReadableLuckTime(stats.pools[pool].luckDays));
+		$('#statsValidBlocks' + pool).text(stats.pools[pool].poolStats.validBlocks);
+		$('#statsTotalPaid' + pool).text((parseFloat(stats.pools[pool].poolStats.totalPaid)).toFixed(8));
+		$('#statsNetworkBlocks' + pool).text(stats.pools[pool].poolStats.networkBlocks);
+		$('#statsNetworkDiff' + pool).text(stats.pools[pool].poolStats.networkDiff);
+		$('#statsNetworkSols' + pool).text(getReadableHashRateString(stats.pools[pool].poolStats.networkSols));
+		$('#statsNetworkConnections' + pool).text(stats.pools[pool].poolStats.networkConnections);
                 $('#statsHashPercent' + pool).text((stats.pools[pool].hashrate/stats.pools[pool].poolStats.networkSols*100).toFixed(5));
             }
         });
     });
-
-	function getReadableNetworkHashRateString(hashrate){
-		hashrate = (hashrate * 1000000);
-		if (hashrate < 1000000)
-			return '0 Sol';
-		var byteUnits = [ ' Hash/s', ' KHash/s', ' MHash/s', ' GHash/s', ' THash/s', ' PHash/s' ];
-		var i = Math.floor((Math.log(hashrate/1000) / Math.log(1000)) - 1);
-		hashrate = (hashrate/1000) / Math.pow(1000, i + 1);
-		return hashrate.toFixed(2) + byteUnits[i];
-	}
 </script>

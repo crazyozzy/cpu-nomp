@@ -1,0 +1,7 @@
+{
+    "name": "Cryply",
+    "symbol": "CRP",
+    "algorithm": "yespower",
+    "blockTime": 30,
+    "txfee": 0.0005
+}

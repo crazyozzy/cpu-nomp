@@ -411,6 +411,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
                         }
                         var coinStats = {
                             name: coinName,
+                            blockTime: poolConfigs[coinName].coin.blockTime,
                             symbol: poolConfigs[coinName].coin.symbol.toUpperCase(),
                             algorithm: poolConfigs[coinName].coin.algorithm,
                             hashrates: replies[i + 1],
@@ -421,7 +422,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
                                 totalPaid: replies[i + 2] ? (replies[i + 2].totalPaid || 0) : 0,
 								networkBlocks: replies[i + 2] ? (replies[i + 2].networkBlocks || 0) : 0,
                                 networkSols: replies[i + 2] ? (replies[i + 2].networkSols || 0) : 0,
-                                //networkSols: replies[i + 2] ? (replies[i + 2].networkBlocks || 0) : 0, 
+                                //networkSols: replies[i + 2] ? (replies[i + 2].networkBlocks || 0) : 0,
 								networkSolsString: getReadableNetworkHashRateString(replies[i + 2] ? (replies[i + 2].networkSols || 0) : 0),
 								networkDiff: replies[i + 2] ? (replies[i + 2].networkDiff || 0) : 0,
 								networkConnections: replies[i + 2] ? (replies[i + 2].networkConnections || 0) : 0,
@@ -582,11 +583,11 @@ module.exports = function(logger, portalConfig, poolConfigs){
                 coinStats.hashrate = shareMultiplier * coinStats.shares / portalConfig.website.stats.hashrateWindow;
                 coinStats.hashrateString = _this.getReadableHashRateString(coinStats.hashrate);
 
-                var _blocktime = 90;
-				var _networkHashRate = parseFloat(coinStats.poolStats.networkSols);
-				coinStats.luckDays =  ((_networkHashRate / coinStats.hashrate * _blocktime) / (24 * 60 * 60)).toFixed(3);
-				coinStats.luckHours = ((_networkHashRate / coinStats.hashrate * _blocktime) / (60 * 60)).toFixed(3);
-				coinStats.minerCount = Object.keys(coinStats.miners).length;
+		var _blocktime = coinStats.blockTime || 90;
+		var _networkHashRate = parseFloat(coinStats.poolStats.networkSols);
+		coinStats.luckDays =  ((_networkHashRate / coinStats.hashrate * _blocktime) / (24 * 60 * 60)).toFixed(3);
+		coinStats.luckHours = ((_networkHashRate / coinStats.hashrate * _blocktime) / (60 * 60)).toFixed(3);
+		coinStats.minerCount = Object.keys(coinStats.miners).length;
                 coinStats.workerCount = Object.keys(coinStats.workers).length;
                 portalStats.global.workers += coinStats.workerCount;
 

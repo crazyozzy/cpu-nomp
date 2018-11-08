@@ -27,7 +27,7 @@ function getReadableLuckTime(lucktime){
 function getReadableHashRateString(hashrate){
 	hashrate = (hashrate * 1000000);
 	if (hashrate < 1000000) {
-		return '0 Sol/s';
+		return '0 Hash/s';
 	}
 	var byteUnits = [ ' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s' ];
 	var i = Math.floor((Math.log(hashrate/1000) / Math.log(1000)) - 1);

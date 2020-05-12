@@ -1,7 +1,7 @@
 {
     "name": "VIPSTARCOIN",
     "symbol": "VIPS",
-    "algorithm": "vips",
+    "algorithm": "sha256d",
     "peerMagic": "012ce7b5",
     "peerMagicTestnet": "1a2b3c4d",
     "blockTime": 120

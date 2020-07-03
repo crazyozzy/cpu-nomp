@@ -3,6 +3,7 @@
     "coin": "cpuchain.json",
 
     "address": "",
+    "BTCover17": true,
 
     "rewardRecipients": {
         "CPUchainWKQfyNBHz5gYPX6J4a5ea9rjWG": 1.0

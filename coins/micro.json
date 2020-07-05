@@ -1,7 +1,7 @@
 {
     "name": "MicroBitcoin",
     "symbol": "MBC",
-    "algorithm": "yespower",
+    "algorithm": "yespower_b2b",
     "blockTime": 60,
     "txfee": 0.0005
 }

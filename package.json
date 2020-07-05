@@ -50,7 +50,7 @@
         "nonce": "^1.0.4",
         "redis": "^2.8.0",
         "request": "^2.88.0",
-        "stratum-pool": "git+https://github.com/crazyozzy/node-stratum-pool.git --branch yespower-blake2b"
+        "stratum-pool": "git+https://github.com/crazyozzy/node-stratum-pool.git"
     },
     "engines": {
         "node": ">=8.11"
